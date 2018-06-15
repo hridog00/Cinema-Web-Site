@@ -1,0 +1,52 @@
+{% extends "./base.html" %}
+
+{% block contenido %}
+
+	<table>
+		<tr>
+			<th></th>
+			<td> <img src="{{pelicula.foto.url}}"/> </td>
+
+		</tr>
+		<tr>
+			<th>Titulo</th>
+			<td> {{pelicula.titulo}} </td>
+
+		</tr>
+		<tr>
+			<th>Director</th>
+			<td> {{pelicula.director}} </td>
+
+		</tr>
+		<tr>
+			<th>Genero</th>
+			<td> {{pelicula.genero}} </td>
+
+		</tr>
+		<tr>
+			<th>Sinopsis</th>
+			<td> {{pelicula.sinopsis}} </td>
+
+		</tr>
+		
+
+	</table>
+
+	<h4>Comentarios</h4>
+				{% for comentario in comentarios %}
+				<h5> {{comentario.nombre}} </h5>
+				<p> {{comentario.contenido}} </p>
+				{% endfor %}
+
+	<form method="post" action="{% url 'comentar' %}"> {% csrf_token %}
+		<input type="hidden" value="{{pelicula.id}}" name ="id" >
+		<h5>Escribe un comentario</h5>
+		<h6>Nombre</h6> 
+		<input type="text" name="nombre" required>
+		<h6>Comentario</h6>
+		<textarea  name="comentario" required></textarea>
+		<input type="submit" value="Enviar">
+
+	</form>
+
+{% endblock %}

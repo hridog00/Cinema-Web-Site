@@ -1,0 +1,17 @@
+{% extends "./base.html" %}
+
+{% block contenido %}
+	<ul>
+		{% for pelicula in peliculas %}
+		<li>
+		<a href="{% url 'reserva' id=pelicula.id %}">
+				<h5> {{ pelicula.titulo }} </h5>
+		</a>
+		</li>
+		{% endfor %}
+
+	</ul>
+		
+
+
+{% endblock %}

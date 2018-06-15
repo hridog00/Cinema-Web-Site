@@ -1,5 +1,28 @@
 {% extends "./base.html" %}
 
 {% block contenido %}
-	Pagina principal
+
+	<form action="{% url 'filtrogenero' %}">
+		
+		<select name="genero">
+			{% for genero in generos %}
+			<option>{{genero}}</option>
+			{% endfor %}
+		</select>
+				
+
+		<input type="submit" value="Filtrar"/>
+	</form>
+
+	<ul>
+		{% for pelicula in peliculas %}
+		<li>
+			{% include "./pelicula.html" %}
+		</li>
+		{% endfor %}
+
+	</ul>
+		
+
+
 {% endblock %}
