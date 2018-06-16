@@ -25,6 +25,15 @@
 	</table>
 	<div id="asientos"></div>
 	<div id="guardar"></div>
+	<div>
+		<form action="guardarReserva" method ="post"> {% csrf_token %}
+		<h5>Estado de la reserva</h5>
+		
+		<h6>Sesiones</h6><input type="text" value="" id="sesiones" name="sesionesSeleccionadas"  hidden/>
+		<input type="submit" value="Finalizar reserva"/>
+
+		</form>
+	</div>
 
 	
 

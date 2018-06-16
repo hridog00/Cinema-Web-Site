@@ -54,7 +54,8 @@ function pintarSala(id){
             tabla.appendChild(tbody);
             div.appendChild(tabla);
 
-            document.getElementById('guardar').innerHTML = '<button onclick="guardarAsientos('+id+')">Guardar</button>';
+            document.getElementById('guardar').innerHTML = '<button onclick="guardarAsientos('+id+')">Guardar reserva</button><button onclick="cancelar()">Cancelar</button>';
+            
            
                   	   }
    }
@@ -62,13 +63,39 @@ function pintarSala(id){
 }
 
 function guardarAsientos(id){
-   if(document.getElementById("nEntradasSesion"+id).value!=id){
+   if(document.getElementById("nEntradasSesion"+id).value!=marcados){
+      alert(marcados);
       alert("El numero de entradas seleccionado no es igual al numero de asientos seleccionados");
    }else{
       console.log(asientos);
+        var req =  new XMLHttpRequest();
+         console.log("ENTRO");
+         req.open("GET", "ocuparAsiento/"+id+"/"+asientos, true);
+         req.onreadystatechange = function(){
+            marcados = 0;
+            asientos = "";
+            var div = document.getElementById("asientos");
+            div.innerHTML = "";
+            alert(document.getElementById('sesiones').value);
+            if(document.getElementById("nEntradasSesion"+id).value!=0){
+               document.getElementById('sesiones').value =  document.getElementById('sesiones').value+"$"+id+"_"+document.getElementById("nEntradasSesion"+id).value;
+            }
+             
+            document.getElementById("nEntradasSesion"+id).value = 0;
+               document.getElementById('guardar').innerHTML = "";
+              
+
+         }
+         req.send();
+
    }
-   alert(marcados);
    
+   
+}
+function cancelar(){
+   var div = document.getElementById("asientos");
+   div.innerHTML = "";
+   document.getElementById('guardar').innerHTML = "";
 }
 
 function marcar(id){

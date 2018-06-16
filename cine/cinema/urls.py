@@ -11,9 +11,12 @@ urlpatterns = [
     path('comentar', views.comentar, name='comentar'),
     path('reserva/asientosSesion/<int:id>', views.asientos, name='asientosSesion'),
     path('reserva/<int:id>', views.reserva, name='reserva'),
-    path('guardarReserva', views.guardarReserva, name='guardarReserva'),
+    path('reserva/guardarReserva', views.guardarReserva, name='guardarReserva'),
 	path('volver', views.volver, name='volver'),
 	path('buscar', views.buscar, name='buscar'),
+	path('reserva/ocuparAsiento/<int:id>/<slug:asientos>', views.ocuparAsiento, name='ocuparAsiento'),
+
+
 
   #  path('formulario-opciones/<int:id_encuesta>', views.formulario_opciones, name='formulario-opciones'),
   #  path('vota', views.vota, name='vota'),

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Pelicula, Comentario, Sesion, Asiento
+from .models import Pelicula, Comentario, Sesion, Asiento, Reserva
 import datetime
 from django.core import serializers
 
@@ -65,10 +65,31 @@ def reserva(request,id):
         #filtar por fecha
     except:
         raise Http404('La pelicula no existe')
-    return render(request, 'cinema/reserva.html', {'sesiones': sesiones})
+    return render(request, 'cinema/reserva.html', {'sesiones': sesiones, 'pelicula':pelicula})
 
 def guardarReserva(request):
-	return render(request, 'cinema/guardarReserva.html');
+	reservaTxt = request.POST["sesionesSeleccionadas"]
+	#reservaTxt = "$2_1$1_4"
+	reservas = []
+	aux = []
+	for i in range(0, len(reservaTxt)):
+		if reservaTxt[i] == '$':
+			if len(aux) != 0:
+				reservas.append(aux)
+				aux = []
+		elif reservaTxt[i] != '_':
+			aux.append(int(reservaTxt[i]))
+
+	reservas.append(aux)
+	sesiones = []
+	sesion = Sesion.objects.get(pk=reservas[0][0])
+
+	for i in reservas:
+		sesion = Sesion.objects.get(pk=i[0])
+		r = Reserva.objects.create(sesion= sesion, nEntradas= i[1])
+		sesiones.append(r)
+
+	return render(request, 'cinema/guardarReserva.html', {'reservas': sesiones, 'pelicula':sesion.pelicula});
 	
 def volver(request):
 	return render(request, 'cinema/index.html');
@@ -111,3 +132,17 @@ def asientos(request, id):
 	res = Asiento.objects.filter(sesion=sesion)
 	asientos = serializers.serialize('json',res)
 	return HttpResponse(asientos, content_type="application/json")
+
+def ocuparAsiento(request, id, asientos):
+	sesion = Sesion.objects.get(pk=id)
+	asientosActuales = Asiento.objects.filter(sesion=sesion)
+
+	for i in range(0, len(asientos)):
+		print(asientosActuales[i].libre, asientos[i])
+		if(asientosActuales[i].libre != int(asientos[i])):
+			print ('Entro')
+			asiento = asientosActuales[i]
+			asiento.libre = int(asientos[i])
+			
+			asiento.save()
+	return HttpResponse()

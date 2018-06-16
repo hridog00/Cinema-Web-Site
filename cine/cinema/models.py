@@ -32,3 +32,6 @@ class Asiento(models.Model):
 	sesion = models.ForeignKey(Sesion, on_delete = models.CASCADE)
 	libre = models.IntegerField(default=0)
 
+class Reserva(models.Model):
+	nEntradas = models.IntegerField()
+	sesion = models.ForeignKey(Sesion, on_delete = models.CASCADE)

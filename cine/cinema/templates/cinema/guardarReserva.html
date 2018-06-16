@@ -1,0 +1,24 @@
+{% extends "./base.html" %}
+
+{% block contenido %}
+
+	<h3>Su reserva ha sido completada con exito</h3>
+		<table>
+			<tr>
+				<th>Pelicula</th>
+				<td>{{ pelicula.titulo }}</td>
+			</tr>
+		{% for reserva in reservas%}
+			<tr>
+				<th>Sesion</th>
+				<td>{{ reserva.sesion.hora }}</td>
+				<th>Sala</th>
+				<td>{{ reserva.sesion.sala.numeroSala }}</td>
+				<th>Numero de entradas</th>
+				<td>{{ reserva.nEntradas}}</td>
+			</tr>
+		{% endfor %}
+
+		</table>
+
+{% endblock %}
