@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Pelicula, Comentario, Sesion, Asiento
 import datetime
+from django.core import serializers
+
 from django.utils import timezone
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+import json
 # Create your views here.
 def index(request):
 
@@ -105,5 +108,6 @@ def buscar(request):
 
 def asientos(request, id):
 	sesion = Sesion.objects.get(pk=id)
-	asientos = Asiento.objects.filter(sesion=sesion)
-	return JsonResponse(asientos)
+	res = Asiento.objects.filter(sesion=sesion)
+	asientos = serializers.serialize('json',res)
+	return HttpResponse(asientos, content_type="application/json")

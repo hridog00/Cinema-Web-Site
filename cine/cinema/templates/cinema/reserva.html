@@ -13,15 +13,18 @@
 			<td> {{sesion.sala.numeroSala}} </td>
 
 			<th>Numero de entradas</th>
-			<td> <input type="number" name="nEntradasSesion{{sesion.id}}" value="0" min="0"> </td>
+			<td> <input type="number" id="nEntradasSesion{{sesion.id}}" value="0" min="0"> </td>
 
 			<th><button onclick="pintarSala({{ sesion.id }})">Seleccionar asientos</button></th>
+			<td id="res{{sesion.id}}">
 			
 			
 		</tr>
 		{%endfor%}
 
 	</table>
+	<div id="asientos"></div>
+	<div id="guardar"></div>
 
 	
 
