@@ -1,9 +1,9 @@
 {% extends "./base.html" %}
 
 {% block contenido %}
-
+	<div class="detalle">
 	<form action="{% url 'filtrogenero' %}">
-		
+		<label>Filtra por genero </label>
 		<select name="genero">
 			{% for genero in generos %}
 			<option>{{genero}}</option>
@@ -13,15 +13,16 @@
 
 		<input type="submit" value="Filtrar"/>
 	</form>
-
-	<ul>
+	</div>
+	<div class="detalle">
+	
 		{% for pelicula in peliculas %}
-		<li>
-			{% include "./pelicula.html" %}
-		</li>
+		
+		{% include "./pelicula.html" %}
+		
 		{% endfor %}
 
-	</ul>
+	</div>
 		
 
 

@@ -7,6 +7,9 @@ from django.utils import timezone
 from django.http import JsonResponse, HttpResponse
 import json
 # Create your views here.
+asientosActualizados = []
+
+
 def index(request):
 
 	peliculas = []
@@ -46,7 +49,7 @@ def filtrogenero(request):
 				peliculas.append(i.pelicula)
 #	peliculas = Pelicula.objects.filter(genero=request.GET["genero"])
 	
-	return render(request, 'cinema/index.html', {'peliculas': peliculas, 'generos': generos});
+	return render(request, 'cinema/index.html', {'peliculas': peliculas, 'generos': generos})
 
 
 def detalle(request, id):
@@ -55,17 +58,23 @@ def detalle(request, id):
     except:
         raise Http404('La pelicula no existe')
     comentarios = Comentario.objects.filter(pelicula = pelicula)
-
-    return render(request, 'cinema/detallePelicula.html', {'pelicula': pelicula, 'comentarios':comentarios})
+    sesiones = Sesion.objects.filter(pelicula = pelicula)
+    ss = [];
+    for i in sesiones:
+    	if i.hora > timezone.now():
+    		ss.append(i)
+    return render(request, 'cinema/detallePelicula.html', {'pelicula': pelicula, 'comentarios':comentarios, 'sesiones':ss})
 
 def reserva(request,id):
-    try:
-        pelicula = Pelicula.objects.get(pk=id)
-        sesiones = Sesion.objects.filter(pelicula = pelicula)
+	asientosActualizados = []
+	try:
+		pelicula = Pelicula.objects.get(pk=id)
+		sesiones = Sesion.objects.filter(pelicula = pelicula)
         #filtar por fecha
-    except:
-        raise Http404('La pelicula no existe')
-    return render(request, 'cinema/reserva.html', {'sesiones': sesiones, 'pelicula':pelicula})
+	except:
+		raise Http404('La pelicula no existe')
+
+	return render(request, 'cinema/reserva.html', {'sesiones': sesiones, 'pelicula':pelicula})
 
 def guardarReserva(request):
 	reservaTxt = request.POST["sesionesSeleccionadas"]
@@ -83,7 +92,7 @@ def guardarReserva(request):
 	reservas.append(aux)
 	sesiones = []
 	sesion = Sesion.objects.get(pk=reservas[0][0])
-
+	print( asientosActualizados)
 	for i in reservas:
 		sesion = Sesion.objects.get(pk=i[0])
 		r = Reserva.objects.create(sesion= sesion, nEntradas= i[1])
@@ -108,11 +117,12 @@ def reservaList(request):
 def comentar(request):
 	nombre=request.POST["nombre"]
 	contenido=request.POST["comentario"]
+	id=request.POST["id"]
 	pelicula=Pelicula.objects.get(id=request.POST["id"])
 	fecha = datetime.datetime.now()
 
 	comentario = Comentario.objects.create(pelicula=pelicula, nombre=nombre,fecha=fecha, contenido=contenido)
-	return redirect('catalogo')
+	return redirect('detalle/'+id)
 
 def buscar(request):
 	texto=request.GET["filtroBusqueda"]
@@ -143,6 +153,6 @@ def ocuparAsiento(request, id, asientos):
 			print ('Entro')
 			asiento = asientosActuales[i]
 			asiento.libre = int(asientos[i])
-			
+			asientosActualizados.append(asiento)
 			asiento.save()
 	return HttpResponse()

@@ -15,21 +15,22 @@ function pintarSala(id){
             var i;
             var div = document.getElementById("asientos");
             div.innerHTML = "";
-            var tabla = document.createElement('table');
-            var tbody = document.createElement('tbody');
+            var tabla = document.createElement('div');
             var fila = 1;
             var index = 0;
-            var tr = document.createElement('tr');
+            var tr = document.createElement('div');
             for (i in result){
                console.log(result[i].fields.fila );
                if(result[i].fields.fila != fila){
-                  tbody.appendChild(tr);
+                  tabla.appendChild(tr);
                   fila = result[i].fields.fila ;
-                  tr = document.createElement('tr');
+                  tr = document.createElement('div');
                }
                
-               var td = document.createElement('td');
+              // var td = document.createElement('td');
+              console.log('paso 1');
                var cb = document.createElement('input');
+               console.log('paso 2')
 
                cb.type = 'checkbox';
                cb.id = index;
@@ -44,14 +45,14 @@ function pintarSala(id){
 
                }
                
-               td.appendChild(cb);
-               tr.appendChild(td);
+            //   td.appendChild(cb);
+               tr.appendChild(cb);
 
 
             }
-            tbody.appendChild(tr);
+           // tbody.appendChild(tr);
 
-            tabla.appendChild(tbody);
+            tabla.appendChild(tr);
             div.appendChild(tabla);
 
             document.getElementById('guardar').innerHTML = '<button onclick="guardarAsientos('+id+')">Guardar reserva</button><button onclick="cancelar()">Cancelar</button>';
@@ -64,7 +65,6 @@ function pintarSala(id){
 
 function guardarAsientos(id){
    if(document.getElementById("nEntradasSesion"+id).value!=marcados){
-      alert(marcados);
       alert("El numero de entradas seleccionado no es igual al numero de asientos seleccionados");
    }else{
       console.log(asientos);
@@ -76,7 +76,6 @@ function guardarAsientos(id){
             asientos = "";
             var div = document.getElementById("asientos");
             div.innerHTML = "";
-            alert(document.getElementById('sesiones').value);
             if(document.getElementById("nEntradasSesion"+id).value!=0){
                document.getElementById('sesiones').value =  document.getElementById('sesiones').value+"$"+id+"_"+document.getElementById("nEntradasSesion"+id).value;
             }

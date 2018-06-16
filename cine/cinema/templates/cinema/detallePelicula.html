@@ -1,7 +1,7 @@
 {% extends "./base.html" %}
 
 {% block contenido %}
-
+	<div class="detalle">
 	<table>
 		<tr>
 			<th></th>
@@ -32,22 +32,53 @@
 		
 
 	</table>
+</div>
+
+	<div class="detalle">
+	<h4>Sesiones futuras</h4>
+	<table class="sesion">
+
+		{% for sesion in sesiones%}
+
+		<tr >
+			<th>Sesion</th>
+			<td> {{sesion.hora}} </td>
+
+			<th>Sala</th>
+			<td> {{sesion.sala.numeroSala}} </td>
+
+		
+			
+		</tr>
+
+		{%endfor%}
+
+	</table>
+</div>
+
+	<div class="detalle">
 
 	<h4>Comentarios</h4>
 				{% for comentario in comentarios %}
+				<div class="container">
 				<h5> {{comentario.nombre}} </h5>
-				<p> {{comentario.contenido}} </p>
+				<h6> {{comentario.contenido}} </h6>
+			</div>
 				{% endfor %}
+
+	</div>
+	<div class="detalle">
 
 	<form method="post" action="{% url 'comentar' %}"> {% csrf_token %}
 		<input type="hidden" value="{{pelicula.id}}" name ="id" >
-		<h5>Escribe un comentario</h5>
-		<h6>Nombre</h6> 
+		<h4>Escribe un comentario</h4>
+		<h5>Nombre</h5> 
 		<input type="text" name="nombre" required>
-		<h6>Comentario</h6>
+		<h5>Comentario</h5>
 		<textarea  name="comentario" required></textarea>
 		<input type="submit" value="Enviar">
 
 	</form>
+</div>
 
 {% endblock %}

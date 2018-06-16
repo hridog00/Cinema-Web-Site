@@ -1,9 +1,9 @@
 {% extends "./base.html" %}
 
 {% block contenido %}
-
+	<div class="detalle">
 	<h3>Su reserva ha sido completada con exito</h3>
-		<table>
+		<table class="sesion">
 			<tr>
 				<th>Pelicula</th>
 				<td>{{ pelicula.titulo }}</td>
@@ -20,5 +20,5 @@
 		{% endfor %}
 
 		</table>
-
+</div>
 {% endblock %}

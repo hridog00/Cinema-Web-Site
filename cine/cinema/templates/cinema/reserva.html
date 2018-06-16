@@ -1,11 +1,13 @@
 {% extends "./base.html" %}
 
 {% block contenido %}
-
-	<table>
+<div class="detalle">
+	<h4>Escoge las sesiones</h4>
+	<table class="sesion">
 
 		{% for sesion in sesiones%}
-		<tr>
+
+		<tr >
 			<th>Sesion</th>
 			<td> {{sesion.hora}} </td>
 
@@ -16,20 +18,22 @@
 			<td> <input type="number" id="nEntradasSesion{{sesion.id}}" value="0" min="0"> </td>
 
 			<th><button onclick="pintarSala({{ sesion.id }})">Seleccionar asientos</button></th>
-			<td id="res{{sesion.id}}">
+			<td id="res{{sesion.id}}">	</td>
 			
 			
 		</tr>
+
 		{%endfor%}
 
 	</table>
-	<div id="asientos"></div>
-	<div id="guardar"></div>
+</div>
+
+	<div id="asientos" class="asientos" ></div>
+	<div id="guardar" class="asientos"></div>
+
 	<div>
 		<form action="guardarReserva" method ="post"> {% csrf_token %}
-		<h5>Estado de la reserva</h5>
-		
-		<h6>Sesiones</h6><input type="text" value="" id="sesiones" name="sesionesSeleccionadas"  hidden/>
+		<input type="text" value="" id="sesiones" name="sesionesSeleccionadas"  hidden/>
 		<input type="submit" value="Finalizar reserva"/>
 
 		</form>
